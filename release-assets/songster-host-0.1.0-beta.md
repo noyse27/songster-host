@@ -5,9 +5,10 @@ Dieses Asset beschreibt den ersten sideloadbaren Beta-Stand. Die APKs werden mit
 
 ```text
 dist/songster-host-0.1.0-beta-debug.apk
-dist/songster-host-0.1.0-beta-release-unsigned.apk
+dist/songster-host-0.1.0-beta-release.apk
 ```
 
 Die Debug-APK ist für lokale Fire-TV-Tests gedacht, nicht für öffentliche
-Verteilung. Für eine weitergegebene Beta sollte eine eigene Signatur
-verwendet werden.
+Verteilung. Die Release-Beta-APK ist ebenfalls mit der Android-Debug-Signatur
+signiert, damit Sideload-Tests auf Android/Fire TV funktionieren. Für eine
+weitergegebene Beta sollte eine eigene Signatur verwendet werden.

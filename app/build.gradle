@@ -13,4 +13,13 @@ android {
         versionCode 1
         versionName '0.1.0-beta'
     }
+
+    buildTypes {
+        release {
+            // Beta sideload builds must be signed or Android rejects them as
+            // invalid packages. Use the standard debug key until a real
+            // release keystore exists outside this public repository.
+            signingConfig signingConfigs.debug
+        }
+    }
 }

@@ -26,11 +26,13 @@ jobs:
         with:
           gradle-version: 8.10.2
 
-      - name: Build debug APK
-        run: gradle assembleDebug
+      - name: Build APKs
+        run: gradle assembleDebug assembleRelease
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
-          name: songster-host-debug-apk
-          path: app/build/outputs/apk/debug/app-debug.apk
+          name: songster-host-apks
+          path: |
+            app/build/outputs/apk/debug/app-debug.apk
+            app/build/outputs/apk/release/app-release.apk

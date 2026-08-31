@@ -24,16 +24,16 @@ if (Test-Path ".\gradlew.bat") {
 }
 
 $debugApk = "app\build\outputs\apk\debug\app-debug.apk"
-$releaseApk = "app\build\outputs\apk\release\app-release-unsigned.apk"
+$releaseApk = "app\build\outputs\apk\release\app-release.apk"
 if (-not (Test-Path $debugApk)) {
   throw "APK wurde nicht gefunden: $debugApk"
 }
 
 Copy-Item $debugApk "$OutputDir\songster-host-0.1.0-beta-debug.apk" -Force
 if (Test-Path $releaseApk) {
-  Copy-Item $releaseApk "$OutputDir\songster-host-0.1.0-beta-release-unsigned.apk" -Force
+  Copy-Item $releaseApk "$OutputDir\songster-host-0.1.0-beta-release.apk" -Force
 }
 Write-Host "Beta-APK: $OutputDir\songster-host-0.1.0-beta-debug.apk"
-if (Test-Path "$OutputDir\songster-host-0.1.0-beta-release-unsigned.apk") {
-  Write-Host "Unsigned Release-APK: $OutputDir\songster-host-0.1.0-beta-release-unsigned.apk"
+if (Test-Path "$OutputDir\songster-host-0.1.0-beta-release.apk") {
+  Write-Host "Signed Release-Beta-APK: $OutputDir\songster-host-0.1.0-beta-release.apk"
 }
