@@ -46,6 +46,7 @@ Das erzeugt:
 
 ```text
 dist/songster-host-0.1.0-beta-debug.apk
+dist/songster-host-0.1.0-beta-release-unsigned.apk
 ```
 
 Falls kein systemweites `gradle` installiert ist, im Repo einmalig einen Wrapper
