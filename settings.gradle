@@ -14,5 +14,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = 'songster-host'
+rootProject.name = 'adolar-host'
 include ':app'

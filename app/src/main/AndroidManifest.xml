@@ -10,7 +10,7 @@
         android:allowBackup="false"
         android:banner="@mipmap/ic_launcher"
         android:icon="@mipmap/ic_launcher"
-        android:label="Songster Host"
+        android:label="Adolar Host"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
