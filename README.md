@@ -1,40 +1,40 @@
-# Songster Host
+# Adolar Host
 
-Sideloadbare Android-/Fire-TV-App für den reinen Songster-Hostmodus.
+Sideloadbare Android-/Fire-TV-App fuer den gemeinsamen Hostmodus von Songster
+und bloeki.
 
-Die App selbst enthält keine Spiellogik. Sie ist eine kleine Fullscreen-WebView,
-fragt einmal nach der Songster-URL und öffnet danach:
+Die App selbst enthaelt keine Spiellogik. Sie ist eine kleine
+Fullscreen-WebView, fragt beim Start welches Spiel gehostet werden soll und
+oeffnet danach die jeweilige Web-Host-App:
 
 ```text
 https://dein-songster-server/host-app
+https://dein-bloeki-server/host-app
 ```
 
-Der Songster-Server stellt Pairing, Nutzerautorisierung, Hostgeräte-Verwaltung
-und den eigentlichen Displaymodus bereit.
+Pairing, Nutzerautorisierung, Hostgeraete-Verwaltung und der eigentliche
+Displaymodus kommen weiterhin aus dem jeweils ausgewaehlten Server.
 
-## Voraussetzung im Songster-Repo
+## Voraussetzung in den Server-Repos
 
-Der Songster-Server braucht die Hostgeräte-Erweiterung aus dem Branch:
+Songster und bloeki brauchen denselben Hostgeraete-Contract:
 
-```text
-codex/host-fire-tv-app
-```
-
-Wichtige Server/Web-Funktionen dort:
-
-- `/host-app` als TV-Weboberfläche
+- `/host-app` als TV-Weboberflaeche
 - `POST /api/v1/host-devices/pairings`
-- Profil: Host-App-Code bestätigen und Geräte trennen
-- privater Tischraum: aktives Hostgerät als Anzeige verwenden
-- gerätegebundene Display-Tokens
+- Profil: Host-App-Code bestaetigen und Geraete trennen
+- privater Tischraum: aktives Hostgeraet als Anzeige verwenden
+- geraetegebundene Display-Tokens
+
+Songster und bloeki werden bewusst separat gekoppelt, weil beide eigene
+Backends und eigene `host_device`-Tabellen haben.
 
 ## App bauen
 
-Benötigt:
+Benoetigt:
 
 - Android SDK
 - JDK 17 oder neuer
-- Gradle oder ein nachträglich erzeugter Gradle Wrapper
+- Gradle oder ein nachtraeglich erzeugter Gradle Wrapper
 
 Debug-Beta bauen:
 
@@ -45,12 +45,12 @@ Debug-Beta bauen:
 Das erzeugt:
 
 ```text
-dist/songster-host-0.1.0-beta-debug.apk
-dist/songster-host-0.1.0-beta-release.apk
+dist/adolar-host-0.1.0-beta-debug.apk
+dist/adolar-host-0.1.0-beta-release.apk
 ```
 
-Falls kein systemweites `gradle` installiert ist, im Repo einmalig einen Wrapper
-erzeugen:
+Falls kein systemweites `gradle` installiert ist, im Repo einmalig einen
+Wrapper erzeugen:
 
 ```powershell
 gradle wrapper
@@ -60,40 +60,43 @@ gradle wrapper
 ## Installation auf Fire TV
 
 1. Debugging/Sideloading auf dem Fire TV aktivieren.
-2. APK aus `dist/` auf das Gerät übertragen.
+2. APK aus `dist/` auf das Geraet uebertragen.
 3. Installieren, zum Beispiel per `adb`:
 
 ```powershell
 adb connect FIRE_TV_IP:5555
-adb install -r .\dist\songster-host-0.1.0-beta-debug.apk
+adb install -r .\dist\adolar-host-0.1.0-beta-debug.apk
 ```
 
 ## Nutzung
 
 1. App starten.
-2. Songster-URL eingeben.
-3. Die App zeigt den Host-App-Code.
-4. In Songster am Handy anmelden.
-5. Profil öffnen und Code unter „Host-App“ bestätigen.
-6. Einen privaten Tisch öffnen.
-7. Im Tischraum das aktive Hostgerät auswählen.
-8. Die Fire-TV-App wechselt automatisch in den Hostmodus.
+2. Songster oder bloeki auswaehlen.
+3. Beim ersten Start des jeweiligen Spiels die passende Server-URL eingeben.
+4. Die Web-Host-App zeigt den Host-App-Code und QR-Code.
+5. Im passenden Spiel am Handy anmelden.
+6. Profil oeffnen und Code unter "Host-App" bestaetigen.
+7. Einen privaten Tisch oeffnen.
+8. Im Tischraum das aktive Hostgeraet auswaehlen.
+9. Die Fire-TV-App wechselt automatisch in den Hostmodus.
 
-Mit der Menü-Taste kann die gespeicherte Songster-URL zurückgesetzt werden.
+Mit der Menue-Taste kommt man jederzeit zur Spielauswahl zurueck. Die App
+speichert die Songster- und bloeki-Server-URL getrennt.
 
 ## Status
 
-`0.1.0-beta` ist ein bewusst dünner MVP:
+`0.1.0-beta` ist eine bewusst duenne Host-Shell:
 
-- native URL-Eingabe
+- native Spielauswahl fuer Songster und bloeki
+- getrennte Server-URLs je Spiel
 - Fullscreen-WebView
-- DOM Storage und Audio aktiviert
-- Wake-Lock während der App-Nutzung
+- DOM Storage und Medienwiedergabe ohne User-Geste aktiviert
+- Wake-Lock waehrend der App-Nutzung
 - Fire-TV/Android-TV Launcher-Eintrag
 
-Noch offen für eine spätere Beta:
+Noch offen fuer eine spaetere Beta:
 
-- hübscherer nativer Setup-Screen
+- huebscherer nativer Setup-Screen
 - signierte Release-APK
 - eigenes Launcher-Banner
 - optionaler QR-Code auf dem nativen URL-Screen
