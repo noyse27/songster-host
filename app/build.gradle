@@ -2,6 +2,16 @@ plugins {
     id 'com.android.application'
 }
 
+// Demo mode (see docs/demo.md): baked in at build time via Gradle
+// properties, never a runtime/product-flavor switch. A build with no
+// properties passed is byte-for-byte the same normal app CI already
+// produces via `gradle assembleDebug assembleRelease` - demoMode defaults
+// to false, so this stays entirely opt-in and never affects the published
+// app-debug.apk/app-release.apk task names or output paths.
+def demoMode = (project.findProperty('demoMode') ?: 'false').toString().toBoolean()
+def demoSongsterUrl = (project.findProperty('demoSongsterUrl') ?: 'https://songster-demo.example.de').toString()
+def demoBloekiUrl = (project.findProperty('demoBloekiUrl') ?: 'https://bloeki-demo.example.de').toString()
+
 android {
     namespace 'de.adolar.songsterhost'
     compileSdk 35
@@ -12,6 +22,14 @@ android {
         targetSdk 35
         versionCode 2
         versionName '0.1.1-beta'
+
+        buildConfigField 'boolean', 'DEMO_MODE', demoMode.toString()
+        buildConfigField 'String', 'DEMO_SONGSTER_URL', "\"${demoSongsterUrl}\""
+        buildConfigField 'String', 'DEMO_BLOEKI_URL', "\"${demoBloekiUrl}\""
+    }
+
+    buildFeatures {
+        buildConfig true
     }
 
     buildTypes {

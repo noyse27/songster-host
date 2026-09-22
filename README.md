@@ -57,6 +57,12 @@ gradle wrapper
 .\gradlew.bat assembleDebug
 ```
 
+## Demomodus
+
+Für ein Vorführgerät, das fest an eine isolierte Demo-Instanz von Songster
+oder blöki gebunden ist (keine eigene URL-Eingabe, natives "DEMO"-
+Wasserzeichen), siehe [docs/demo.md](docs/demo.md).
+
 ## Installation auf Fire TV
 
 1. Debugging/Sideloading auf dem Fire TV aktivieren.
