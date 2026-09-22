@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
@@ -14,6 +15,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -110,16 +112,35 @@ public class MainActivity extends Activity {
         footer.setPadding(0, 24, 0, 0);
         root.addView(footer);
 
+        if (BuildConfig.DEMO_MODE) {
+            TextView demoHint = createText(
+                    "Demo-Modus: fester Demo-Server, keine eigene URL nötig.",
+                    Color.rgb(255, 210, 120), 14);
+            demoHint.setPadding(0, 8, 0, 0);
+            root.addView(demoHint);
+        }
+
         setContentView(root);
     }
 
     private void selectGame(String game) {
+        if (BuildConfig.DEMO_MODE) {
+            // Demo builds never read/write a server URL - the whole point is
+            // that a demo device can't be pointed at an arbitrary (or a real
+            // production) server. See docs/demo.md.
+            showHostApp(demoServerUrl(game));
+            return;
+        }
         String serverUrl = prefs.getString(serverUrlKey(game), "");
         if (serverUrl == null || serverUrl.trim().isEmpty()) {
             showSetup(game, "");
         } else {
             showHostApp(serverUrl);
         }
+    }
+
+    private String demoServerUrl(String game) {
+        return GAME_BLOEKI.equals(game) ? BuildConfig.DEMO_BLOEKI_URL : BuildConfig.DEMO_SONGSTER_URL;
     }
 
     private void showSetup(String game, String initialUrl) {
@@ -177,8 +198,28 @@ public class MainActivity extends Activity {
 
         webView.setWebViewClient(new WebViewClient());
         webView.setWebChromeClient(new WebChromeClient());
-        setContentView(webView);
+        setContentView(BuildConfig.DEMO_MODE ? withDemoBadge(webView) : webView);
         webView.loadUrl(serverUrl + "/host-app");
+    }
+
+    /** Wraps the WebView with a small "DEMO" badge in the corner - the host
+     * display has no HTML of its own to inject a banner into (unlike a demo
+     * web app), so this is a native overlay instead. */
+    private View withDemoBadge(WebView content) {
+        FrameLayout frame = new FrameLayout(this);
+        frame.addView(content, new FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+
+        TextView badge = createText("DEMO", Color.WHITE, 14);
+        badge.setBackgroundColor(Color.argb(170, 0, 0, 0));
+        badge.setPadding(24, 8, 24, 8);
+        FrameLayout.LayoutParams badgeParams = new FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+        badgeParams.gravity = Gravity.TOP | Gravity.END;
+        badgeParams.setMargins(0, 24, 24, 0);
+        frame.addView(badge, badgeParams);
+
+        return frame;
     }
 
     private String normalizeServerUrl(String raw) {
